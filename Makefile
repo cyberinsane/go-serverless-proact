@@ -2,7 +2,7 @@
 
 build:
 	dep ensure -v
-	env GOOS=linux go build -ldflags="-s -w" -o bin/assets get-assets/main.go
+	env GOOS=linux go build -ldflags="-s -w" -o bin/assets main.go
 	env GOOS=linux go build -ldflags="-s -w" -o bin/createAsset create-asset/main.go
 
 clean:

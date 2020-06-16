@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"proact/getassets"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -19,7 +20,7 @@ type Response events.APIGatewayProxyResponse
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(ctx context.Context) (Response, error) {
 	var buf bytes.Buffer
-	body, err := json.Marshal(getAssets())
+	body, err := json.Marshal(getassets.GetAssets())
 	if err != nil {
 		return Response{StatusCode: 404}, err
 	}
@@ -38,29 +39,8 @@ func Handler(ctx context.Context) (Response, error) {
 	return resp, nil
 }
 
-// TODO - Move this to crud.go
-var assets = []asset{
-	asset{"someId1", "someName1", "www.google.com", 10},
-	asset{"someId2", "someName2", "www.google.com", 10},
-}
-
-func getAssets() []asset {
-	return assets
-}
-
-func getAsset(assetId string) asset {
-	return asset{"someId", "someName", "www.google.com", 10}
-}
-
-type asset struct {
-	ID             string `json:"ref"`
-	Name           string `json:"name"`
-	CoverImagePath string `json:"coverImagePath"`
-	Likes          int    `json:"title"`
-}
-
 func main() {
 	lambda.Start(Handler)
-	body, _ := json.Marshal(getAssets())
+	body, _ := json.Marshal(getassets.GetAssets())
 	fmt.Println("Assets body: ", body)
 }
